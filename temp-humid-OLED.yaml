@@ -10,7 +10,7 @@ esphome:
 # so you can use a single firmware for all devices
   name_add_mac_suffix: true
 
-# Added for 
+# When everything loaded, trigger screen saver timer 
   on_boot:
     priority: -100
     then:
@@ -58,9 +58,6 @@ captive_portal:
 # Sets up the improv via serial client for Wi-Fi provisioning.
 # Handy if your device has a usb port for the user to add credentials when they first get it.
 improv_serial:
-
-# Enable logging
-logger:
 
 globals:
   - id: iteration
