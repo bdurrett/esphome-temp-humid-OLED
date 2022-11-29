@@ -1,0 +1,164 @@
+# These substitutions allow the end user to override certain values
+substitutions:
+  name: "temphumid"
+  friendly_name: "TempHumidOLED"
+  area_name: "UnknownRoom"
+
+esphome:
+  name: "${name}"
+  # Automatically add the mac address to the name
+  # so you can use a single firmware for all devices
+  name_add_mac_suffix: true
+
+  # This will allow for (future) project identification,
+  # configuration and updates.
+  project:
+    name: bdurrett.esphome-temp-humid-OLED
+    version: "1.0"
+
+esp8266:
+  board: d1_mini
+
+# To be able to get logs from the device via serial and api.
+logger:
+
+# API is a requirement of the dashboard import.
+api:
+
+# OTA is required for Over-the-Air updating
+ota:
+
+# This should point to the public location of this yaml file.
+dashboard_import:
+  package_import_url: github://github://bdurrett/esphome-temp-humid-OLED/temp-humid-OLED.yaml@main
+
+wifi:
+  # Set up a wifi access point using the device name above
+  ap:
+    password: "12345678"
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device.
+captive_portal:
+
+
+##########################################################
+# Most projects should not remove anything from above here
+# and should just modify the name, project name/version 
+# and git url for the dashboard_import
+##########################################################
+
+
+# Sets up the improv via serial client for Wi-Fi provisioning.
+# Handy if your device has a usb port for the user to add credentials when they first get it.
+improv_serial:
+
+
+esphome:
+  on_boot:
+    priority: -100
+    then:
+      - script.execute: screen_saver
+
+#esp8266:
+#  board: nodemcuv2
+
+# Enable logging
+logger:
+
+globals:
+  - id: iteration
+    type: int
+    restore_value: no
+    initial_value: '0'
+  - id: display_off
+    type: boolean
+    restore_value: no
+    initial_value: 'false'
+
+binary_sensor:
+  - platform: gpio
+    id: sleepbutton
+    pin: D6   # GPIO12
+    name: "Sleep"
+    filters:
+      - delayed_on: 10ms    # debounce
+    on_click:
+      min_length: 50ms
+      max_length: 350ms
+      then:
+        - lambda:
+            if( id(display_off) ){
+              id(display_off) = false;
+              id(oled).turn_on();
+              id(screen_saver).execute();
+            }
+            else{
+              id(display_off) = true;
+              id(oled).turn_off();
+            }
+        - logger.log: "Button pressed"
+
+sensor:
+  - platform: dht
+    pin: D5    # GPIO14
+    temperature:
+      id: temperature
+      name: "Temperature"
+      filters:
+        - lambda: return x * (9.0/5.0) + 32.0;
+      unit_of_measurement: "°F"
+
+    humidity:
+      id: humidity
+      name: "Humidity"
+    update_interval: 60s
+    model: DHT11
+    
+i2c:
+  sda: D1     # GPIO5
+  scl: D2     # GPIO4
+
+font:
+  # gfonts://family[@weight]
+  - file: "gfonts://Roboto"
+    id: roboto
+    size: 14
+
+graph:
+  # Show bare-minimum auto-ranged graph
+  - id: single_temperature_graph
+    sensor: temperature
+    duration: 24h
+    x_grid: 6h
+    width: 128
+    height: 48
+
+# See wifi connection bug https://community.home-assistant.io/t/esphome-wifi-auth-expired/443790/20
+display:
+  - platform: ssd1306_i2c
+    id: oled
+    model: "SSD1306 128x64"
+    address: 0x3C
+    update_interval: 10s   # For whatevs reason, this (or at least 2s) fixes the wifi connection problem 
+    lambda: |-
+      if( ( id(iteration)++ % 2) == 0 ){
+        it.print(0, 0, id(roboto), "${area_name}" );
+        it.printf(0, 14, id(roboto), "Temp: %.1f°F", id(temperature).state );
+        it.printf(0, 28, id(roboto), "Humid: %.1f%%", id(humidity).state);
+      }
+      else{
+        it.print(0, 0, id(roboto), "24H Temperatures");
+        it.graph(0, 16, id(single_temperature_graph));
+      }
+
+script:
+  - id: screen_saver
+    mode: restart     # Restart the countdown if called multiple times
+    then:
+      - delay: 5 min
+      - lambda: 
+          if( id(display_off) == false ){
+              id(display_off) = true;
+              id(oled).turn_off();
+          } 
