@@ -5,16 +5,9 @@ on:
 
 jobs:
   ci:
-    name: Building ${{ matrix.file }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        file:
-          - temp-humid-OLED.yaml
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-      - name: Build ESPHome firmware to verify configuration
-        uses: esphome/build-action@v1.5.0
+      - uses: actions/checkout@v2
+      - uses: esphome/build-action@v1.1.0
         with:
-          yaml_file: ${{ matrix.file }}
+          yaml_file: temp-humid-OLED.yaml
