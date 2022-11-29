@@ -1,6 +1,6 @@
 # About
 
-Add some information about your project here.
+ESPHome temperature and humidity sensor with OLED display.
 
 # Installation
 

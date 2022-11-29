@@ -1,4 +1,4 @@
 # CHANGEME: Set these variable to your liking
-title: ESPHome Project Template
-description: Powered by ESPHome and ESP Web Tools
+title: ESPHome temp humid OLED
+description: ESPHome temperature and humidity sensor with OLED display
 theme: jekyll-theme-slate
