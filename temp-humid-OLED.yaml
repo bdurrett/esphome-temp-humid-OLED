@@ -30,7 +30,7 @@ ota:
 
 # This should point to the public location of this yaml file.
 dashboard_import:
-  package_import_url: github://github://bdurrett/esphome-temp-humid-OLED/temp-humid-OLED.yaml@main
+  package_import_url: github://bdurrett/esphome-temp-humid-OLED/temp-humid-OLED.yaml@main
 
 wifi:
   # Set up a wifi access point using the device name above
