@@ -10,6 +10,12 @@ esphome:
 # so you can use a single firmware for all devices
   name_add_mac_suffix: true
 
+# Added for 
+  on_boot:
+    priority: -100
+    then:
+      - script.execute: screen_saver
+
 # This will allow for (future) project identification,
 # configuration and updates.
   project:
@@ -52,15 +58,6 @@ captive_portal:
 # Sets up the improv via serial client for Wi-Fi provisioning.
 # Handy if your device has a usb port for the user to add credentials when they first get it.
 improv_serial:
-
-esphome:
-  on_boot:
-    priority: -100
-    then:
-      - script.execute: screen_saver
-
-#esp8266:
-#  board: nodemcuv2
 
 # Enable logging
 logger:
