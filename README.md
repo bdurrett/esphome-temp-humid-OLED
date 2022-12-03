@@ -1,6 +1,8 @@
 # ESPHome Temperature and Humidity with OLED Display
 Software and casing for a small device that works with ESPHome / Home Assistant to capture temperature and hudity and
-display it locally.
+display it locally. Includes a button to toggle screen saver / lights out mode.
+
+![ESPHome Temperature Humidity OLED fully built](https://brett.durrett.net/wp-content/uploads/2022/12/full_build.jpeg)
 
 ## Software Setup
 
@@ -59,7 +61,7 @@ packages:
 
 ## Hardware Setup
 
-FIXME TODO
+FIXME TODO: Maybe add a narrative (that said, diagram is self explanatory)
 
 ### Parts
 * ESP8266 board, any should work, [the ESP-12F is nice and tiny](https://smile.amazon.com/gp/product/B081PX9YFV/ref=ppx_yo_dt_b_asin_title_o01_s01?ie=UTF8&psc=1) and fits the 3D printed case
