@@ -1,21 +1,62 @@
-# ESPHome Project Template
+# ESPHome Temperature and Humidity with OLED Display
+Software and casing for a small device that works with ESPHome / Home Assistant to capture temperature and hudity and
+display it locally.
 
-This repo serves as a template for creating a new ESPHome project.
+## Software Setup
 
-It includes a GitHub workflow that will automatically build the configuration(s) and then deploys a simple 
-website via GitHub pages that utilises [ESP Web Tools](https://esphome.github.io/esp-web-tools/) for users to 
-easily install your project onto their device.
+This setup assumed you are using [ESPHome](https://esphome.io/) through [Home Assistant](https://www.home-assistant.io/). If you are using ESPHome directly, the directions are likley _close enough_.
 
-## Instructions
+- [ ] From the ESPHome web interface in Home Assistant, select "+ New Device" (the green button in the lower right corner)
+- [ ] From the "New device" dialog, you will be asked to select the first-time install method, "OPEN ESPHOME WEB" or "CONTINUE", these directions assume you continue via Home Assistant.
+- [ ] In the "Create configuration" dialog, provide a name for this device
+- [ ] In the "Select your device type", select the board you are using (we assume ESP8266, others may work)
+- [ ] You should see a "Configuration created!" dialog, with the options to "SKIP", or "INSTALL". Select "SKIP"
+- [ ] In the ESPHome web interface, find your device and select "EDIT". You should see pre-existing content that looks something like this:
 
-1. Use this repo template to [generate](https://github.com/esphome/esphome-project-template/generate) your own repository.
-   - Make sure to check `Include all branches` so that GitHub Pages is automatically enabled.
-2. Clone your new repository.
-3. Add your project specific YAML configuration(s) along with the contents of the `project-template-....yaml` files, taking note of the comments in this template file and name accordingly.
-4. 
-    a. Update [.github/workflows/publish.yml](.github/workflows/publish.yml) to contain your own YAML config filename(s).
-    b. Update [.github/workflows/ci.yml](.github/workflows/ci.yml) to contain your own YAML config filename(s).
-5. Update [static/_config.yml](static/_config.yml) to change the title, description and basic theme of the generated website.
-6. Add more content to the [static/index.md](static/index.md) file to explain your project.
-    Make sure to leave the installation code tags in place so users get the install button.
-7. Push your changes to the repository and GitHub Actions will automatically build and deploy your project.
+```
+esphome:
+  name: tho-tutorial
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "[random chracters that are your key]"
+
+ota:
+  password: "[random characters that are your password]"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "THO Fallback Hotspot"
+    password: "5EKR17"
+
+captive_portal:
+```    
+
+- [ ] Append the following to the file
+
+```
+substitutions:
+  friendly_name: "THO Tutorial"
+  area_name: "Garage"
+
+packages:
+  bdurrett.esphome-temp-humid-OLED: github://bdurrett/esphome-temp-humid-OLED/temp-humid-OLED.yaml
+
+```
+- [ ] In the `esphome` section of your config, add an entry `name_add_mac_suffix: true` if you want the MAC address added to each device name (generally for bulk installs)
+- [ ] In the `esp8266` section, comment out the board if it is not `d1_mini` (if you see errors about references to D6, D5, D1, or D2, this is the board not recognizing NodeMCU pins.
+
+## Hardware Setup
+
+FIXME TODO
