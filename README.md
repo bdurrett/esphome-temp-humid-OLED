@@ -78,5 +78,8 @@ I finally got around to tuning up my 3D printer and making a model. The case can
 
 ![Case](https://brett.durrett.net/wp-content/uploads/2022/12/build-01-scaled.jpeg)
 
+## To Do
+- [ ] Temperature (and humidity) seems higher, possibly heat from components influencing the ratings? Add configurable offsets to calibrate once good readings are known.
+- [ ] Preceed the sensor labels with the friendly name
 
 
