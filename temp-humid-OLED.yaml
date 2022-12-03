@@ -8,7 +8,7 @@ esphome:
   name: "${name}"
 # Automatically add the mac address to the name
 # so you can use a single firmware for all devices
-  name_add_mac_suffix: true
+  name_add_mac_suffix: false
 
 # When everything loaded, trigger screen saver timer 
   on_boot:
@@ -72,7 +72,7 @@ globals:
 binary_sensor:
   - platform: gpio
     id: sleepbutton
-    pin: D6   # GPIO12
+    pin: D6   # D6, GPIO12
     name: "Sleep"
     filters:
       - delayed_on: 10ms    # debounce
@@ -94,7 +94,7 @@ binary_sensor:
 
 sensor:
   - platform: dht
-    pin: D5    # GPIO14
+    pin: D5    # D5, GPIO14
     temperature:
       id: temperature
       name: "Temperature"
@@ -109,8 +109,8 @@ sensor:
     model: DHT11
     
 i2c:
-  sda: D1     # GPIO5
-  scl: D2     # GPIO4
+  sda: D1     # D1, GPIO5
+  scl: D2     # D2, GPIO4
 
 font:
   # gfonts://family[@weight]
