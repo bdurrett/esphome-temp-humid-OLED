@@ -60,3 +60,23 @@ packages:
 ## Hardware Setup
 
 FIXME TODO
+
+### Parts
+* ESP8266 board, any should work, [the ESP-12F is nice and tiny](https://smile.amazon.com/gp/product/B081PX9YFV/ref=ppx_yo_dt_b_asin_title_o01_s01?ie=UTF8&psc=1) and fits the 3D printed case
+* SSD1306 OLED display, other types may work, I used [this one](https://smile.amazon.com/gp/product/B09C5K91H7/ref=ppx_yo_dt_b_asin_title_o01_s02?ie=UTF8&psc=1)
+* 6mm button (momentary switch), I used [these](https://www.amazon.com/gp/product/B07C7211PJ/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
+* A 10 K ohm resistor (for pull down)
+
+### Wiring Diagram
+
+![ESPHome Temperature Humidity OLED wiring diagram](https://brett.durrett.net/wp-content/uploads/2022/12/wiring-diagram.png)
+
+Wiring diagram created with [Fritzing](https://fritzing.org/)
+
+### Sorta Fancy (okay, Janky) Case
+I finally got around to tuning up my 3D printer and making a model. The case can be a bit tight... I'm using 30 gauge wire, anything much thicker might be a beast to work with. The button used is 6x6mm, the OLED matches the one linked, above.
+
+![Case](https://brett.durrett.net/wp-content/uploads/2022/12/build-01-scaled.jpeg)
+
+
+
