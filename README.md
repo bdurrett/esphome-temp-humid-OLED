@@ -2,6 +2,8 @@
 Software and casing for a small device that works with ESPHome / Home Assistant to capture temperature and hudity and
 display it locally. Includes a button to toggle screen saver / lights out mode.
 
+More on this project on my blog [ESPHome Temperature and Humidity with OLED Display](https://brett.durrett.net/esphome-temperature-and-humidity-with-oled-display/)
+
 ![ESPHome Temperature Humidity OLED fully built](https://brett.durrett.net/wp-content/uploads/2022/12/full_build2.jpeg)
 
 ## Software Setup
