@@ -3,6 +3,11 @@ substitutions:
   name: "temphumid"
   friendly_name: "TempHumidOLED"
   area_name: "UnknownRoom"
+  display_in_fahrenheit: "true"                 # visual display only, calculation and sensor to HA always in Celsius
+  temperature_calibration_offset: '0'           # step 1, degrees added to temperature (negative to subtract)
+  temperature_calibration_multiply: '1'         # step 2, multiplier for temperature  
+  humidity_calibration_offset: '0'              # step 1, percent (100 basic points) added to humidity (negative to subtract)
+  humidity_calibration_multiply: '1'            # step 2, multiplier for humidity
 
 esphome:
   name: "${name}"
@@ -72,13 +77,13 @@ globals:
 binary_sensor:
   - platform: gpio
     id: sleepbutton
-    pin: D6   # D6, GPIO12
+    pin: D6                 # D6, GPIO12
     name: "Sleep"
     filters:
-      - delayed_on: 10ms    # debounce
+      - delayed_on: 5ms     # debounce
     on_click:
-      min_length: 50ms
-      max_length: 350ms
+      min_length: 10ms
+      max_length: 500ms
       then:
         - lambda:
             if( id(display_off) ){
@@ -94,23 +99,26 @@ binary_sensor:
 
 sensor:
   - platform: dht
-    pin: D5    # D5, GPIO14
+    pin: D5                 # D5, GPIO14
     temperature:
       id: temperature
       name: "Temperature"
       filters:
-        - lambda: return x * (9.0/5.0) + 32.0;
-      unit_of_measurement: "°F"
-
+        - offset: ${temperature_calibration_offset}
+        - multiply: ${temperature_calibration_multiply}
+      unit_of_measurement: "°C"  
     humidity:
       id: humidity
       name: "Humidity"
+      filters:
+        - offset: ${humidity_calibration_offset}
+        - multiply: ${humidity_calibration_multiply}
     update_interval: 60s
     model: DHT11
     
 i2c:
-  sda: D1     # D1, GPIO5
-  scl: D2     # D2, GPIO4
+  sda: D1                     # D1, GPIO5
+  scl: D2                     # D2, GPIO4
 
 font:
   # gfonts://family[@weight]
@@ -137,7 +145,12 @@ display:
     lambda: |-
       if( ( id(iteration)++ % 2) == 0 ){
         it.print(0, 0, id(roboto), "${area_name}" );
-        it.printf(0, 14, id(roboto), "Temp: %.1f°F", id(temperature).state );
+        if( ${display_in_fahrenheit} ){
+          it.printf(0, 14, id(roboto), "Temp: %.1f°F", id(temperature).state * (9.0/5.0) + 32.0 );
+        }
+        else{
+          it.printf(0, 14, id(roboto), "Temp: %.1f°C", id(temperature).state );
+        }
         it.printf(0, 28, id(roboto), "Humid: %.1f%%", id(humidity).state);
       }
       else{
