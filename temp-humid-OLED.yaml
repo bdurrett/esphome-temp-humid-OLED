@@ -25,7 +25,7 @@ esphome:
 # configuration and updates.
   project:
     name: bdurrett.esphome-temp-humid-OLED
-    version: "1.0"
+    version: "1.1"
 
 esp8266:
   board: d1_mini

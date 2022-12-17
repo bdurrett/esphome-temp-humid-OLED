@@ -47,12 +47,17 @@ wifi:
 captive_portal:
 ```    
 
-- [ ] Append the following to the file
+- [ ] Append the following to your file and modify as you please (copy from "substitutions" section for latest options) 
 
 ```
 substitutions:
   friendly_name: "THO Tutorial"
   area_name: "Garage"
+  display_in_fahrenheit: "true"                 # visual display only, calculation and sensor to HA always in Celsius
+  temperature_calibration_offset: '0'           # step 1, degrees added to temperature (negative to subtract)
+  temperature_calibration_multiply: '1'         # step 2, multiplier for temperature  
+  humidity_calibration_offset: '0'              # step 1, percent (100 basic points) added to humidity (negative to subtract)
+  humidity_calibration_multiply: '1'            # step 2, multiplier for humidity
 
 packages:
   bdurrett.esphome-temp-humid-OLED: github://bdurrett/esphome-temp-humid-OLED/temp-humid-OLED.yaml
